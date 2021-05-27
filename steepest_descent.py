@@ -53,16 +53,11 @@ class SteepestDescent():
         Fl = np.array(self.F(x + t * d))
         Fr = np.array(self.F(x))
         Re = self.sigma * t * np.dot(self.nabla_F(x), d)
-        # i = 0
         while np.all(Fl > Fr + Re):
             t *= self.nu
             Fl = np.array(self.F(x + t * d))
             Fr = np.array(self.F(x))
             Re = self.sigma * t * np.dot(self.nabla_F(x), d)
-            # print(Fl, Fr, Re, Fl - Fr - Re)
-            # i += 1
-            # if i == 10:
-            #     break
         return t
     
     def steepest(self, x):
@@ -73,23 +68,10 @@ class SteepestDescent():
             x = x + t * d
             d = np.array(fmin(self.phi, x, args=(x, )))
             th = self.theta(d, x)
-            print("theta = ", th)
         return x
 
 if __name__ == "__main__":
-    method = SteepestDescent(2, 0.8, 0.8, 1e-5)
-    print(method.ndim)
-    x = np.array([2., 3.], dtype=np.float64)
-    print(x)
-    print(method.f1(x))
-    print(method.f2(x))
-    print("F = ", method.F(x))
-    print(method.grad(method.f1, x))
-    print(method.nabla_F(x))
-    d = np.array([1., 5.], dtype=np.float64)
-    print(method.phi(d, x))
-    t = method.armijo(x, d)
-    print(t)
+    sd = SteepestDescent(2, 0.8, 0.8, 1e-5)
     x_init = np.array([2, 2])
-    x = method.steepest(x_init)
-    print(method.F(x))
+    x = sd.steepest(x_init)
+    print(sd.F(x))
