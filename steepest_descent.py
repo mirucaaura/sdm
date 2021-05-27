@@ -5,12 +5,14 @@ class SteepestDescent():
     def __init__(
         self,
         ndim: int,
-        nu: int,
-        sigma: int,
+        nu: float,
+        sigma: float,
+        eps: float,
     ):
         self.ndim = ndim
         self.nu = nu
         self.sigma = sigma
+        self.eps = eps
     
     def f1(self, x):
         return x[0]**2 + x[1]**2
@@ -40,27 +42,39 @@ class SteepestDescent():
         nabla_F = self.nabla_F(x)
         return max(np.dot(nabla_F, d)) + 0.5 * np.linalg.norm(d) ** 2
 
-    def armijo(self, x, d):
+    def theta(self, d, x):
+        return self.phi(d, x) + 0.5 * np.linalg.norm(d) ** 2
+
+    def armijo(self, d, x):
         power = 0
         t = pow(self.nu, power)
         Fl = np.array(self.F(x + t * d))
         Fr = np.array(self.F(x))
         Re = self.sigma * t * np.dot(self.nabla_F(x), d)
-        i = 0
+        # i = 0
         while np.all(Fl > Fr + Re):
             t *= self.nu
             Fl = np.array(self.F(x + t * d))
             Fr = np.array(self.F(x))
             Re = self.sigma * t * np.dot(self.nabla_F(x), d)
-            print(Fl, Fr, Re, Fl - Fr - Re)
-            i += 1
-            if i == 10:
-                break
+            # print(Fl, Fr, Re, Fl - Fr - Re)
+            # i += 1
+            # if i == 10:
+            #     break
         return t
-        
+    
+    def steepest(self, x):
+        d = np.array(fmin(self.phi, x, args=(x, )))
+        th = self.theta(d, x)
+        while abs(th) > self.eps:
+            t = self.armijo(d, x)
+            x = x + t * d
+            d = np.array(fmin(self.phi, x, args=(x, )))
+            th = self.theta(d, x)
+        return x
 
 if __name__ == "__main__":
-    method = SteepestDescent(2, 0.8, 0.8)
+    method = SteepestDescent(2, 0.8, 0.8, 1e-4)
     print(method.ndim)
     x = np.array([2., 3.], dtype=np.float64)
     print(x)
@@ -73,3 +87,5 @@ if __name__ == "__main__":
     print(method.phi(d, x))
     t = method.armijo(x, d)
     print(t)
+    x_init = np.array([2, 2])
+    x = method.steepest(x_init)
