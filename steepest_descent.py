@@ -11,11 +11,11 @@ class SteepestDescent:
     sigma: float
     eps: float
     
-    def f1(self, x: NDArray[(1, ...), np.float64]) -> float:
+    def f1(self, x: NDArray[(1, ...), np.float64]) -> Any:
         # return x[0]**2 + x[1]**2
         return x[0]**2 + 3 * (x[1] - 1)**2
 
-    def f2(self, x: NDArray[(1, ...), np.float64]) -> float:
+    def f2(self, x: NDArray[(1, ...), np.float64]) -> Any:
         # return 5 + x[1]**2 - x[0]
         return 2 * (x[0] - 1)**2 + x[1]**2
 
@@ -37,11 +37,11 @@ class SteepestDescent:
     def nabla_F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(Any, ...), np.float64]:
         return np.array([self.grad(self.f1, x), self.grad(self.f2, x)])
 
-    def phi(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
+    def phi(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> Any:
         nabla_F = self.nabla_F(x)
         return max(np.dot(nabla_F, d)) + 0.5 * np.linalg.norm(d) ** 2
 
-    def theta(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
+    def theta(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> Any:
         return self.phi(d, x) + 0.5 * np.linalg.norm(d) ** 2
 
     def armijo(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
