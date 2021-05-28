@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import fmin
 from nptyping import NDArray
-from typing import Any
+from typing import Any, Callable
 
 class SteepestDescent():
     def __init__(
@@ -27,7 +27,7 @@ class SteepestDescent():
     def F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(1, ...), np.float64]:
         return np.array([self.f1(x), self.f2(x)])
 
-    def grad(self, f, x: NDArray[(1, ...), np.float64], h=1e-4) -> NDArray[(1, ...), np.float64]:
+    def grad(self, f: Callable[[NDArray[(1, ...), np.float64]], float], x: NDArray[(1, ...), np.float64], h=1e-4) -> NDArray[(1, ...), np.float64]:
         g = np.zeros_like(x)
         for i in range(self.ndim):
             tmp = x[i]
