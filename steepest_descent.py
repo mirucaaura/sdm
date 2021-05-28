@@ -2,19 +2,14 @@ import numpy as np
 from scipy.optimize import fmin
 from nptyping import NDArray
 from typing import Any, Callable
+from dataclasses import dataclass
 
-class SteepestDescent():
-    def __init__(
-        self,
-        ndim: int,
-        nu: float,
-        sigma: float,
-        eps: float,
-    ):
-        self.ndim = ndim
-        self.nu = nu
-        self.sigma = sigma
-        self.eps = eps
+@dataclass
+class SteepestDescent:
+    ndim: int
+    nu: float
+    sigma: float
+    eps: float
     
     def f1(self, x: NDArray[(1, ...), np.float64]) -> float:
         # return x[0]**2 + x[1]**2
