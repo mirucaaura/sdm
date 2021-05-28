@@ -12,11 +12,9 @@ class SteepestDescent:
     eps: float
     
     def f1(self, x: NDArray[(1, ...), np.float64]) -> Any:
-        # return x[0]**2 + x[1]**2
         return x[0]**2 + 3 * (x[1] - 1)**2
 
     def f2(self, x: NDArray[(1, ...), np.float64]) -> Any:
-        # return 5 + x[1]**2 - x[0]
         return 2 * (x[0] - 1)**2 + x[1]**2
 
     def F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(1, ...), np.float64]:
@@ -66,9 +64,3 @@ class SteepestDescent:
             d = np.array(fmin(self.phi, x, args=(x, )))
             th = self.theta(d, x)
         return x
-
-if __name__ == "__main__":
-    sd = SteepestDescent(2, 0.8, 0.8, 1e-5)
-    x_init = np.array([2, 2])
-    x = sd.steepest(x_init)
-    print(sd.F(x))
