@@ -3,6 +3,7 @@ from scipy.optimize import fmin
 from nptyping import NDArray
 from typing import Any, Callable
 from dataclasses import dataclass
+from obj_func import Obj
 
 @dataclass
 class SteepestDescent:
@@ -10,15 +11,6 @@ class SteepestDescent:
     nu: float
     sigma: float
     eps: float
-    
-    def f1(self, x: NDArray[(1, ...), np.float64]) -> Any:
-        return x[0]**2 + 3 * (x[1] - 1)**2
-
-    def f2(self, x: NDArray[(1, ...), np.float64]) -> Any:
-        return 2 * (x[0] - 1)**2 + x[1]**2
-
-    def F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(1, ...), np.float64]:
-        return np.array([self.f1(x), self.f2(x)])
 
     def grad(self, f: Callable[[NDArray[(1, ...), np.float64]], float], x: NDArray[(1, ...), np.float64], h=1e-4) -> NDArray[(1, ...), np.float64]:
         g = np.zeros_like(x)
@@ -33,7 +25,12 @@ class SteepestDescent:
         return g
 
     def nabla_F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(Any, ...), np.float64]:
-        return np.array([self.grad(self.f1, x), self.grad(self.f2, x)])
+        obj = Obj()
+        F = obj.Fss()
+        nabla_F = np.zeros((len(F), self.ndim)) # (m, n) dimensional matrix
+        for i, f in enumerate(F):
+            nabla_F[i] = self.grad(F[i], x)
+        return nabla_F
 
     def phi(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> Any:
         nabla_F = self.nabla_F(x)
@@ -44,14 +41,15 @@ class SteepestDescent:
 
     def armijo(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
         power = 0
+        obj = Obj()
         t = pow(self.nu, power)
-        Fl = np.array(self.F(x + t * d))
-        Fr = np.array(self.F(x))
+        Fl = np.array(obj.Fs(x + t * d))
+        Fr = np.array(obj.Fs(x))
         Re = self.sigma * t * np.dot(self.nabla_F(x), d)
         while np.all(Fl > Fr + Re):
             t *= self.nu
-            Fl = np.array(self.F(x + t * d))
-            Fr = np.array(self.F(x))
+            Fl = np.array(obj.Fs(x + t * d))
+            Fr = np.array(obj.Fs(x))
             Re = self.sigma * t * np.dot(self.nabla_F(x), d)
         return t
     

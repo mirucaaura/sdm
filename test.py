@@ -1,5 +1,6 @@
 import numpy as np
 from steepest_descent import SteepestDescent
+from obj_func import Obj
 
 sd = SteepestDescent(
     ndim=2,
@@ -8,6 +9,8 @@ sd = SteepestDescent(
     eps=1e-5,
 )
 
-x_init = np.array([2, 2])
+obj = Obj()
+
+x_init = np.array([1, 2])
 x = sd.steepest(x_init)
-print(sd.F(x))
+print(obj.Fs(x))
