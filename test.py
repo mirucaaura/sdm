@@ -12,5 +12,5 @@ sd = SteepestDescent(
 obj = Obj()
 
 x_init = np.array([1, 2])
-x = sd.steepest(x_init)
-print(obj.Fs(x))
+x_opt = sd.steepest(x_init)
+print(obj.Fs(x_opt))

@@ -8,9 +8,30 @@ The implementation of the method for solving multi-objective optimization probel
 
 # How to use
 
+Define the objective function to be minimized in the `obj_func.py`. We also define a list of objective functions in the same file. An example is as follows:
+
+```python
+class Obj:
+
+    def f(self, x: NDArray[(1, ...), np.float64]) -> Any:
+        return x[0]**2 + 3 * (x[1] - 1)**2
+
+    def g(self, x: NDArray[(1, ...), np.float64]) -> Any:
+        return 2 * (x[0] - 1)**2 + x[1]**2
+
+    def Fs(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(1, ...), np.float64]:
+        return np.array([self.f(x), self.g(x)])
+
+    def Fss(self):
+        return np.array([self.f, self.g])
+```
+
+The main algorithm lies in `steepest_descent.py`, and we can run a test code by calling `steepest()` method. An example is as follows:
+
 ```python
 import numpy as np
 from steepest_descent import SteepestDescent
+from obj_func import Obj
 
 sd = SteepestDescent(
     ndim=2,
@@ -19,9 +40,11 @@ sd = SteepestDescent(
     eps=1e-5,
 )
 
-x_init = np.array([2, 2])
-x = sd.steepest(x_init)
-print(sd.F(x)) # Pareto optimal
+obj = Obj()
+
+x_init = np.array([1, 2])
+x_opt = sd.steepest(x_init)
+print(obj.Fs(x_opt)) # Pareto optimal
 ```
 
 # Refferences

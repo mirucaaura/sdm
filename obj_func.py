@@ -1,9 +1,7 @@
 import numpy as np
 from nptyping import NDArray
 from typing import Any, Callable
-from dataclasses import dataclass
 
-@dataclass
 class Obj:
 
     def f(self, x: NDArray[(1, ...), np.float64]) -> Any:
