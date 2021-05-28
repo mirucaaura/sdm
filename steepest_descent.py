@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.optimize import fmin
+from nptyping import NDArray
+from typing import Any
 
 class SteepestDescent():
     def __init__(
@@ -14,18 +16,18 @@ class SteepestDescent():
         self.sigma = sigma
         self.eps = eps
     
-    def f1(self, x):
+    def f1(self, x: NDArray[(1, ...), np.float64]) -> float:
         # return x[0]**2 + x[1]**2
         return x[0]**2 + 3 * (x[1] - 1)**2
 
-    def f2(self, x):
+    def f2(self, x: NDArray[(1, ...), np.float64]) -> float:
         # return 5 + x[1]**2 - x[0]
         return 2 * (x[0] - 1)**2 + x[1]**2
 
-    def F(self, x):
+    def F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(1, ...), np.float64]:
         return np.array([self.f1(x), self.f2(x)])
 
-    def grad(self, f, x, h=1e-4):
+    def grad(self, f, x: NDArray[(1, ...), np.float64], h=1e-4) -> NDArray[(1, ...), np.float64]:
         g = np.zeros_like(x)
         for i in range(self.ndim):
             tmp = x[i]
@@ -37,17 +39,17 @@ class SteepestDescent():
             x[i] = tmp
         return g
 
-    def nabla_F(self, x):
+    def nabla_F(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(Any, ...), np.float64]:
         return np.array([self.grad(self.f1, x), self.grad(self.f2, x)])
 
-    def phi(self, d, x):
+    def phi(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
         nabla_F = self.nabla_F(x)
         return max(np.dot(nabla_F, d)) + 0.5 * np.linalg.norm(d) ** 2
 
-    def theta(self, d, x):
+    def theta(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
         return self.phi(d, x) + 0.5 * np.linalg.norm(d) ** 2
 
-    def armijo(self, d, x):
+    def armijo(self, d: NDArray[(1, ...), np.float64], x: NDArray[(1, ...), np.float64]) -> float:
         power = 0
         t = pow(self.nu, power)
         Fl = np.array(self.F(x + t * d))
@@ -60,7 +62,7 @@ class SteepestDescent():
             Re = self.sigma * t * np.dot(self.nabla_F(x), d)
         return t
     
-    def steepest(self, x):
+    def steepest(self, x: NDArray[(1, ...), np.float64]) -> NDArray[(1, ...), np.float64]:
         d = np.array(fmin(self.phi, x, args=(x, )))
         th = self.theta(d, x)
         while abs(th) > self.eps:
