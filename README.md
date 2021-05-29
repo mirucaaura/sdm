@@ -47,6 +47,13 @@ x_opt = sd.steepest(x_init)
 print(obj.Fs(x_opt)) # Pareto optimal
 ```
 
+|Parameter|Type|Default|Description|
+|-|-|-|-|
+|ndim|int (x >= 1)|required|The dimension of decision variable|
+|nu|float (0.0 < x < 1.0)|required|The parameter for an algorithm|
+|sigma|float (0.0 < x < 1.0)|required|The parameter for an algorithm|
+|eps|float (x > 0)|required|Absolute error in xopt between iterations that is acceptable for convergence.|
+
 # Refferences
 
 1. [Steepest descent methods for multicriteria optimization](https://link.springer.com/article/10.1007%2Fs001860000043)
