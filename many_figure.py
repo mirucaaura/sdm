@@ -12,7 +12,7 @@ obj = Obj()
 
 np.random.seed(1)
 
-nmax = 50 # the number of computing the Pareto optimal
+nmax = 20 # the number of computing the Pareto optimal
 x_opt = np.zeros((4, nmax, 2))
 
 for i in range(4):
@@ -33,19 +33,19 @@ ax[0, 1].scatter(x_opt[1][:, 0], x_opt[1][:, 1], alpha=0.7)
 ax[1, 0].scatter(x_opt[2][:, 0], x_opt[2][:, 1], alpha=0.7)
 ax[1, 1].scatter(x_opt[3][:, 0], x_opt[3][:, 1], alpha=0.7)
 
-ax[0, 0].set_title("nu = 0.5, sigma = 0.4")
-ax[0, 1].set_title("nu = 0.6, sigma = 0.6")
-ax[1, 0].set_title("nu = 0.7, sigma = 0.9")
-ax[1, 1].set_title("nu = 0.9, sigma = 0.3")
+ax[0, 0].set_title(r"$\nu = 0.5, \sigma = 0.4$")
+ax[0, 1].set_title(r"$\nu = 0.6, \sigma = 0.6$")
+ax[1, 0].set_title(r"$\nu = 0.7, \sigma = 0.9$")
+ax[1, 1].set_title(r"$\nu = 0.9, \sigma = 0.3$")
 
-ax[0, 0].set_xlabel("$f(x_1)$")
-ax[0, 0].set_ylabel("$f(x_2)$")
-ax[0, 1].set_xlabel("$f(x_1)$")
-ax[0, 1].set_ylabel("$f(x_2)$")
-ax[1, 0].set_xlabel("$f(x_1)$")
-ax[1, 0].set_ylabel("$f(x_2)$")
-ax[1, 1].set_xlabel("$f(x_1)$")
-ax[1, 1].set_ylabel("$f(x_2)$")
+ax[0, 0].set_xlabel("$f_1(x)$")
+ax[0, 0].set_ylabel("$f_2(x)$")
+ax[0, 1].set_xlabel("$f_1(x)$")
+ax[0, 1].set_ylabel("$f_2(x)$")
+ax[1, 0].set_xlabel("$f_1(x)$")
+ax[1, 0].set_ylabel("$f_2(x)$")
+ax[1, 1].set_xlabel("$f_1(x)$")
+ax[1, 1].set_ylabel("$f_2(x)$")
 
 fig.tight_layout()
 plt.show()
