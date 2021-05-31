@@ -43,8 +43,8 @@ sd = SteepestDescent(
 obj = Obj()
 
 x_init = np.array([1, 2])
-x_opt = sd.steepest(x_init)
-print(obj.Fs(x_opt)) # Pareto optimal
+f_opt = sd.steepest(x_init)
+print(obj.Fs(f_opt)) # Pareto optimal
 ```
 
 |Parameter|Type|Default|Description|
